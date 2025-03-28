@@ -1,4 +1,7 @@
 package com.appscol.security.auth.persistence.model.rol;
 
-public class RoleEnum {
+public enum RoleEnum {
+    ADMIN,
+    STUDENT,
+    PROFESSOR,
 }
