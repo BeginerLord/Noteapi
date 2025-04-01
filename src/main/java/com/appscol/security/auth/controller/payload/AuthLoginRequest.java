@@ -1,4 +1,9 @@
 package com.appscol.security.auth.controller.payload;
 
-public class AuthLoginRequest {
+import jakarta.validation.constraints.NotBlank;
+
+public record AuthLoginRequest(
+        @NotBlank String email,
+        @NotBlank String password
+) {
 }
