@@ -1,5 +1,6 @@
 package com.appscol.security.config;
 
+import com.appscol.constants.EndpointsConstants;
 import com.appscol.security.utils.jwt.JwtTokenProvider;
 import com.appscol.security.utils.jwt.JwtTokenValidator;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(http -> {
 
                     // Endpoints públicos
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/sign-up").permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/refresh").permitAll();
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SIGNUP).permitAll();
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_LOGIN).permitAll();
+                    //http.requestMatchers(HttpMethod.POST, "/api/v1/auth/refresh").permitAll();
 
                     // Endpoints Swagger
                     http.requestMatchers(
