@@ -8,6 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -30,12 +31,19 @@ public class JwtTokenProvider {
         Algorithm algorithm = Algorithm.HMAC256(this.privateKey);
         String username = authentication.getPrincipal().toString();
 
+        // Obtén el rol del usuario
+        String role = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElse("ROLE_USER");
+
         return JWT.create()
                 .withIssuer(this.userGenerator)
                 .withSubject(username)
                 .withJWTId(UUID.randomUUID().toString())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY))
+                .withClaim("role", role)
                 .sign(algorithm);
     }
 
