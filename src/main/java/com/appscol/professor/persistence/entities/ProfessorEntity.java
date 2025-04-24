@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Builder
@@ -20,6 +21,9 @@ public class ProfessorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
+    private UUID uuid;
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userEntity;
@@ -29,4 +33,12 @@ public class ProfessorEntity {
 
     @OneToMany(mappedBy = "professorEntity")
     private List<SubjectEntity> subjectEntities;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID();
+        }
+    }
+
 }

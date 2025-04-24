@@ -34,6 +34,8 @@ public class SecurityConfig {
                     // Endpoints públicos
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SIGNUP).permitAll();
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_LOGIN).permitAll();
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_PROFESSOR).permitAll();
+
                     //http.requestMatchers(HttpMethod.POST, "/api/v1/auth/refresh").permitAll();
 
                     // Endpoints Swagger

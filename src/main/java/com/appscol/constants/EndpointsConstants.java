@@ -5,7 +5,7 @@ public class EndpointsConstants {
         throw new IllegalStateException("Utility class");
     }
 
-    public static final String ENDPOINT_BASE_API = "/api/v1";
+    public static final String ENDPOINT_BASE_API = "/api/v1/school";
     public static final String ENDPOINT_LOGIN = ENDPOINT_BASE_API + "/login";
     public static final String ENDPOINT_SIGNUP = ENDPOINT_BASE_API + "/signup";
     public static final String ENDPOINT_STUDENT = ENDPOINT_BASE_API + "/student";
