@@ -1,4 +1,15 @@
 package com.appscol.user.persistence.repositories;
 
-public interface UserRepository {
+import com.appscol.user.persistence.entities.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public interface UserRepository extends JpaRepository<UserEntity,Long> {
+
+    Optional<UserEntity> findUserEntityByUsername(String username);
+    Optional<UserEntity> findUserEntityByEmail(String email);
+    Optional<UserEntity> findByUuid(UUID uuid);
+
 }

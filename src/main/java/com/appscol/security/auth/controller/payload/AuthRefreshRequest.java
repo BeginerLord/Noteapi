@@ -1,4 +1,4 @@
 package com.appscol.security.auth.controller.payload;
 
-public class AuthRefreshRequest {
+public record AuthRefreshRequest() {
 }
