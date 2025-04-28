@@ -13,6 +13,7 @@ public class ProfessorFactory {
 
     public ProfessorDto professorDto(ProfessorEntity professorEntity) {
         return ProfessorDto.builder()
+                .uuid(professorEntity.getUuid())
                 .especialidad(professorEntity.getEspecialidad())
                 .telefono(professorEntity.getTelefono())
                 .username(professorEntity.getUserEntity().getUsername())

@@ -71,7 +71,7 @@ public class ProfessorController {
             @RequestParam String especialidad,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nombre") String sortBy,
+            @RequestParam(defaultValue = "userEntity.username") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
 
         Pageable pageable = PageRequest.of(page, size,
@@ -89,7 +89,7 @@ public class ProfessorController {
     public ResponseEntity<Page<ProfessorDto>> findAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nombre") String sortBy,
+            @RequestParam(defaultValue = "userEntity.username") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
 
         Pageable pageable = PageRequest.of(page, size,
