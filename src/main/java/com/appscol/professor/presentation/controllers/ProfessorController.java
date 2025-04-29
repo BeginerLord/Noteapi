@@ -38,6 +38,9 @@ public class ProfessorController {
         return ResponseEntity.created(URI.create(EndpointsConstants.ENDPOINT_PROFESSOR)).build();
     }
 
+
+
+
     @Operation(summary = "Actualizar profesor por UUID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Profesor actualizado exitosamente"),
