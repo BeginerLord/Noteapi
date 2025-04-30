@@ -3,7 +3,7 @@ package com.appscol.professor.service.implementation;
 import com.appscol.helpers.exception.exceptions.ResourceNotFoundException;
 import com.appscol.professor.factory.ProfessorFactory;
 import com.appscol.professor.persistence.entities.ProfessorEntity;
-import com.appscol.professor.persistence.entities.repositories.ProfessorRepository;
+import com.appscol.professor.persistence.repositories.ProfessorRepository;
 import com.appscol.professor.presentation.dto.ProfessorDto;
 import com.appscol.professor.presentation.payload.ProfessorPayload;
 import com.appscol.professor.service.interfaces.IProfessorService;
