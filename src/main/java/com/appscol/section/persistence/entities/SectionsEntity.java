@@ -20,7 +20,7 @@ public class SectionsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre; // Ej: "A", "B", "C"
+    private String sectionName; // Ej: "A", "B", "C"
 
     @ManyToOne
     private GradeEntity gradeEntity;

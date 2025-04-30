@@ -34,6 +34,33 @@ public class SecurityConfig {
                     // Endpoints públicos
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SIGNUP).permitAll();
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_LOGIN).permitAll();
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SCHEDULE).permitAll();
+
+                    //post
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
+
+
+
+                    //GETS
+                    http.requestMatchers(HttpMethod.GET, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
+
+                    //delete
+                    http.requestMatchers(HttpMethod.DELETE,EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
+
+
+                    //update
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
+
+
+
                     //http.requestMatchers(HttpMethod.POST, "/api/v1/auth/refresh").permitAll();
 
                     // Endpoints Swagger
