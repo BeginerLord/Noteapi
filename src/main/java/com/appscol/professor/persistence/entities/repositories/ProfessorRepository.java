@@ -15,7 +15,5 @@ public interface ProfessorRepository extends JpaRepository<ProfessorEntity, Long
 
     Optional<ProfessorEntity>findByUuid(UUID uuid);
 
-    Page<ProfessorEntity> findAllBy(Pageable pageable);
-
     Optional<ProfessorEntity> findByUserEntity(UserEntity userEntity);
 }

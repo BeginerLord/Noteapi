@@ -19,7 +19,7 @@ public class GradeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre; // Ej: "6°", "7°", "10°"
+    private String grade; // Ej: "6°", "7°", "10°"
 
     @OneToMany(mappedBy = "gradeEntity")
     private List<SectionsEntity> sectionsEntity;

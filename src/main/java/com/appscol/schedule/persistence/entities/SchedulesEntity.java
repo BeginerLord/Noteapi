@@ -1,6 +1,7 @@
 package com.appscol.schedule.persistence.entities;
 
 import com.appscol.grade.persistence.entities.GradeEntity;
+import com.appscol.professor.persistence.entities.ProfessorEntity;
 import com.appscol.section.persistence.entities.SectionsEntity;
 import com.appscol.subject.persistence.entities.SubjectEntity;
 import jakarta.persistence.*;
@@ -30,4 +31,5 @@ public class SchedulesEntity {
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private SubjectEntity subjectEntity;
+
 }
