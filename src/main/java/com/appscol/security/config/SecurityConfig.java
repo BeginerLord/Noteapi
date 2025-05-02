@@ -36,33 +36,33 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_LOGIN).permitAll();
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SCHEDULE).permitAll();
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_GRADE).permitAll();
-
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_NOTE).permitAll();
                     //post
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_GRADE + "/**").permitAll();
-
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_NOTE + "/**").permitAll();
 
                     //GETS
                     http.requestMatchers(HttpMethod.GET, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
                     http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
                     http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
                     http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_GRADE + "/**").permitAll();
-
+                    http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_NOTE + "/**").permitAll();
                     //delete
                     http.requestMatchers(HttpMethod.DELETE,EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_GRADE + "/**").permitAll();
-
+                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_NOTE + "/**").permitAll();
 
                     //update
                     http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
                     http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
                     http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
                     http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_GRADE + "/**").permitAll();
-
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_NOTE + "/**").permitAll();
 
                     //http.requestMatchers(HttpMethod.POST, "/api/v1/auth/refresh").permitAll();
 

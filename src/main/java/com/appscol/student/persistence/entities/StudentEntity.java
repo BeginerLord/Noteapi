@@ -1,6 +1,6 @@
 package com.appscol.student.persistence.entities;
 
-import com.appscol.Note.persistence.entities.NotesEntity;
+import com.appscol.note.persistence.entities.NotesEntity;
 import com.appscol.grade.persistence.entities.GradeEntity;
 import com.appscol.section.persistence.entities.SectionsEntity;
 import com.appscol.subject.persistence.entities.SubjectEntity;

@@ -13,5 +13,6 @@ public class EndpointsConstants {
     public static final String ENDPOINT_ADMIN = ENDPOINT_BASE_API + "/admin";
     public static final String ENDPOINT_SCHEDULE = ENDPOINT_BASE_API + "/schedule";
     public static final String ENDPOINT_GRADE = ENDPOINT_BASE_API + "/grade";
+    public static final String ENDPOINT_NOTE = ENDPOINT_BASE_API + "/note";
 
 }
