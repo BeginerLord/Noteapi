@@ -42,6 +42,7 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
                     http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SECTION + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SUBJECT + "/**").permitAll();
 
 
 
@@ -50,12 +51,16 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
                     http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
                     http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_SECTION + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_SUBJECT + "/**").permitAll();
+
 
                     //delete
                     http.requestMatchers(HttpMethod.DELETE,EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_SECTION + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_SUBJECT + "/**").permitAll();
+
 
 
 
@@ -64,6 +69,8 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
                     http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
                     http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SECTION + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SUBJECT + "/**").permitAll();
+
 
 
 
