@@ -2,8 +2,7 @@ package com.appscol.subject.service.implementation;
 
 import com.appscol.helpers.exception.exceptions.ResourceNotFoundException;
 import com.appscol.professor.persistence.entities.ProfessorEntity;
-import com.appscol.professor.persistence.entities.repositories.ProfessorRepository;
-import com.appscol.section.presentation.dto.SectionDto;
+import com.appscol.professor.persistence.repositories.ProfessorRepository;
 import com.appscol.subject.factory.SubjectFactory;
 import com.appscol.subject.persistence.entities.SubjectEntity;
 import com.appscol.subject.persistence.repositories.SubjectRepository;
