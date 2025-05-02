@@ -21,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 @Service
@@ -39,7 +38,7 @@ public class ProfessorServiceImpl implements IProfessorService {
     @Override
     @Transactional
     public void save(ProfessorPayload payload) {
-        /* ---------- 1. Validaciones básicas ---------- */
+
         if (userRepository.existsByUsername(payload.getUsername())) {
             throw new ConflictException("El username ya está en uso");
         }
@@ -47,8 +46,7 @@ public class ProfessorServiceImpl implements IProfessorService {
             throw new ConflictException("El email ya está en uso");
         }
 
-        /* ---------- 2. Crear el usuario ---------- */
-        UUID newUuid = UUID.randomUUID(); // generar UUID compartido
+        UUID newUuid = UUID.randomUUID();
 
         RoleEntity professorRole = roleRepository.findByRoleEnum(RoleEnum.PROFESSOR)
                 .orElseThrow(() -> new ResourceNotFoundException("Rol PROFESSOR no encontrado"));
@@ -65,18 +63,18 @@ public class ProfessorServiceImpl implements IProfessorService {
                 .isEnabled(true)
                 .build();
 
-        user = userRepository.save(user); // IMPORTANTE: persistir primero
+        user = userRepository.save(user);
 
-        /* ---------- 3. Crear el profesor ---------- */
         ProfessorEntity professor = ProfessorEntity.builder()
-                .userEntity(user) // 🔥 clave: no pongas .id()
+                .userEntity(user)
                 .uuid(newUuid)
                 .especialidad(payload.getEspecialidad().trim())
                 .telefono(payload.getTelefono())
                 .build();
 
-        professorRepository.save(professor); // Hibernate usará el ID de userEntity automáticamente
+        professorRepository.save(professor);
     }
+
 
     @Override
     @Transactional
