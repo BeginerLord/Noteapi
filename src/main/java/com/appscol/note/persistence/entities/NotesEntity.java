@@ -1,4 +1,4 @@
-package com.appscol.Note.persistence.entities;
+package com.appscol.note.persistence.entities;
 
 import com.appscol.student.persistence.entities.StudentEntity;
 import com.appscol.subject.persistence.entities.SubjectEntity;
