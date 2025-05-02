@@ -1,4 +1,4 @@
-package com.appscol.professor.persistence.entities.repositories;
+package com.appscol.professor.persistence.repositories;
 
 import com.appscol.professor.persistence.entities.ProfessorEntity;
 import com.appscol.user.persistence.entities.UserEntity;
