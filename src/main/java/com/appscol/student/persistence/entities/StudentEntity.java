@@ -1,6 +1,6 @@
 package com.appscol.student.persistence.entities;
 
-import com.appscol.Note.persistence.entities.NotesEntity;
+import com.appscol.note.persistence.entities.NotesEntity;
 import com.appscol.grade.persistence.entities.GradeEntity;
 import com.appscol.section.persistence.entities.SectionsEntity;
 import com.appscol.subject.persistence.entities.SubjectEntity;
@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Builder
@@ -20,13 +21,14 @@ import java.util.List;
 public class StudentEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @MapsId
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", nullable = false)
     private UserEntity userEntity;
 
+    @Column(unique = true, nullable = false, updatable = false)
+    private UUID uuid;
     private String acudiente;
     private String direccion;
     private String telefono;
@@ -46,4 +48,11 @@ public class StudentEntity {
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id"))
     private List<SubjectEntity> subjectEntities; // solo si usas asignación individual
+
+    @PrePersist
+    public void prePersist() {
+        if (this.uuid == null) {
+            this.uuid = userEntity.getUuid();
+        }
+    }
 }
