@@ -56,8 +56,8 @@ public class SecurityConfig {
 
                     //update
                     http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
 
 
 

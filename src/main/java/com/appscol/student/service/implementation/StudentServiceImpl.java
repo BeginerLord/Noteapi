@@ -2,6 +2,8 @@ package com.appscol.student.service.implementation;
 
 import com.appscol.helpers.exception.exceptions.ConflictException;
 import com.appscol.helpers.exception.exceptions.ResourceNotFoundException;
+import com.appscol.professor.persistence.entities.ProfessorEntity;
+import com.appscol.professor.presentation.payload.ProfessorPayload;
 import com.appscol.security.auth.persistence.model.rol.RoleEntity;
 import com.appscol.security.auth.persistence.model.rol.RoleEnum;
 import com.appscol.security.auth.persistence.repositories.RoleRepository;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -38,41 +41,38 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     @Transactional
     public void save(StudentPayload payload) {
-        /* ---------- 1. Validaciones básicas ---------- */
-        if (userRepository.existsByUsername((payload.getUsername()))){
+
+        if (userRepository.existsByUsername(payload.getUsername())) {
             throw new ConflictException("El username ya está en uso");
         }
-        if (userRepository.existsByEmail((payload.getEmail()))){
+        if (userRepository.existsByEmail(payload.getEmail())) {
             throw new ConflictException("El email ya está en uso");
         }
 
-        /* ---------- 2. Crear el usuario ---------- */
-        UUID newUuid = UUID.randomUUID();                   // generamos uno solo
+        UUID newUuid = UUID.randomUUID();
+
+        RoleEntity studentRole = roleRepository.findByRoleEnum(RoleEnum.STUDENT)
+                .orElseThrow(() -> new ResourceNotFoundException("Rol PROFESSOR no encontrado"));
 
         UserEntity user = UserEntity.builder()
-                .uuid(newUuid)                              // mismo UUID para ambos
+                .uuid(newUuid)
                 .username(payload.getUsername())
                 .email(payload.getEmail())
                 .password(passwordEncoder.encode(payload.getPassword()))
-                .roles(new HashSet<>())
+                .roles(Set.of(studentRole))
                 .accountNoExpired(true)
                 .accountNoLocked(true)
                 .credentialNoExpired(true)
                 .isEnabled(true)
                 .build();
 
-        RoleEntity studentRole = roleRepository.findByRoleEnum(RoleEnum.STUDENT)
-                .orElseThrow(() -> new ResourceNotFoundException("Rol STUDENT no encontrado"));
-
-        user.getRoles().add(studentRole);
         user = userRepository.save(user);
 
-        /* ---------- 3. Crear el estudiante ---------- */
         StudentEntity student = StudentEntity.builder()
                 .userEntity(user)
                 .uuid(newUuid)
                 .acudiente(payload.getAcudiente().trim())
-                .direccion(payload.getDireccion())
+                .direccion(payload.getDireccion().trim())
                 .telefono(payload.getTelefono())
                 .build();
 

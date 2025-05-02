@@ -1,7 +1,5 @@
 package com.appscol.student.presentation.payload;
 
-import com.appscol.grade.persistence.entities.GradeEntity;
-import com.appscol.section.persistence.entities.SectionsEntity;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 

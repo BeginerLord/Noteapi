@@ -1,12 +1,9 @@
 package com.appscol.student.presentation.controller;
 
 import com.appscol.constants.EndpointsConstants;
-import com.appscol.professor.presentation.dto.ProfessorDto;
-import com.appscol.professor.presentation.payload.ProfessorPayload;
 import com.appscol.student.presentation.dto.StudentDto;
 import com.appscol.student.presentation.payload.StudentPayload;
 import com.appscol.student.service.interfaces.IStudentService;
-import com.appscol.user.persistence.entities.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -26,7 +23,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(EndpointsConstants.ENDPOINT_STUDENT)
 @RequiredArgsConstructor
-@Tag(name = "Student", description = "Operaciones relacionadas con los estudiantes")
+@Tag(name = "Students", description = "Operaciones relacionadas con los estudiantes")
 public class StudentController {
 
     private final IStudentService studentService;

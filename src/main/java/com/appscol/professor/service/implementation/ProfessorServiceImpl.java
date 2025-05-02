@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 @Service
 @RequiredArgsConstructor
@@ -39,43 +40,42 @@ public class ProfessorServiceImpl implements IProfessorService {
     @Transactional
     public void save(ProfessorPayload payload) {
         /* ---------- 1. Validaciones básicas ---------- */
-        if (userRepository.existsByUsername((payload.getUsername()))){
+        if (userRepository.existsByUsername(payload.getUsername())) {
             throw new ConflictException("El username ya está en uso");
         }
-        if (userRepository.existsByEmail((payload.getEmail()))){
+        if (userRepository.existsByEmail(payload.getEmail())) {
             throw new ConflictException("El email ya está en uso");
         }
 
         /* ---------- 2. Crear el usuario ---------- */
-        UUID newUuid = UUID.randomUUID();                   // generamos uno solo
+        UUID newUuid = UUID.randomUUID(); // generar UUID compartido
+
+        RoleEntity professorRole = roleRepository.findByRoleEnum(RoleEnum.PROFESSOR)
+                .orElseThrow(() -> new ResourceNotFoundException("Rol PROFESSOR no encontrado"));
 
         UserEntity user = UserEntity.builder()
-                .uuid(newUuid)                              // mismo UUID para ambos
+                .uuid(newUuid)
                 .username(payload.getUsername())
                 .email(payload.getEmail())
                 .password(passwordEncoder.encode(payload.getPassword()))
-                .roles(new HashSet<>())
+                .roles(Set.of(professorRole))
                 .accountNoExpired(true)
                 .accountNoLocked(true)
                 .credentialNoExpired(true)
                 .isEnabled(true)
                 .build();
 
-        RoleEntity professorRole = roleRepository.findByRoleEnum(RoleEnum.PROFESSOR)
-                .orElseThrow(() -> new ResourceNotFoundException("Rol PROFESSOR no encontrado"));
-
-        user.getRoles().add(professorRole);
-        user = userRepository.save(user);
+        user = userRepository.save(user); // IMPORTANTE: persistir primero
 
         /* ---------- 3. Crear el profesor ---------- */
         ProfessorEntity professor = ProfessorEntity.builder()
-                .userEntity(user)
+                .userEntity(user) // 🔥 clave: no pongas .id()
                 .uuid(newUuid)
                 .especialidad(payload.getEspecialidad().trim())
                 .telefono(payload.getTelefono())
                 .build();
 
-        professorRepository.save(professor);
+        professorRepository.save(professor); // Hibernate usará el ID de userEntity automáticamente
     }
 
     @Override

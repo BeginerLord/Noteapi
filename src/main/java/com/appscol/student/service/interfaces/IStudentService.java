@@ -2,7 +2,6 @@ package com.appscol.student.service.interfaces;
 
 import com.appscol.student.presentation.dto.StudentDto;
 import com.appscol.student.presentation.payload.StudentPayload;
-import com.appscol.user.persistence.entities.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
