@@ -63,4 +63,18 @@ public class ScheduleController {
         return ResponseEntity.ok(horarios);
     }
 
+    @Operation(
+            summary = "Confirmar horario asignado a profesor",
+            description = "Permite a un profesor confirmar un horario que le ha sido asignado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Horario confirmado exitosamente"),
+            @ApiResponse(responseCode = "403", description = "No tienes permisos para confirmar este horario"),
+            @ApiResponse(responseCode = "404", description = "Horario no encontrado")
+    })
+    @PutMapping("/profesor/{profesorUuid}/horario/{horarioId}/confirmar")
+    public ResponseEntity<Void> confirmarHorario(@PathVariable UUID profesorUuid, @PathVariable Long horarioId) {
+        scheduleService.confirmarHorarioAsignado(profesorUuid, horarioId);
+        return ResponseEntity.ok().build();
+    }
 }

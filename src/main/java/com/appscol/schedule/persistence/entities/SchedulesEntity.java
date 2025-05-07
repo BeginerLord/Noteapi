@@ -23,6 +23,10 @@ public class SchedulesEntity {
     private String horaInicio;
     private String horaFin;
 
+    @Column(nullable = false)
+    private boolean confirmado = false;
+
+
 
     @ManyToOne
     @JoinColumn(name = "sections_id")

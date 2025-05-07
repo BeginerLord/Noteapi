@@ -1,6 +1,7 @@
 package com.appscol.schedule.services.implementation;
 
 import com.appscol.helpers.exception.exceptions.ConflictException;
+import com.appscol.helpers.exception.exceptions.ForbiddenException;
 import com.appscol.helpers.exception.exceptions.ResourceNotFoundException;
 import com.appscol.schedule.persistence.entities.SchedulesEntity;
 import com.appscol.schedule.persistence.repositories.ScheduleRepository;
@@ -90,6 +91,21 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Transactional(readOnly = true)
     public List<ScheduleDto> findScheduleByProfessorUuid(UUID uuid) {
         return scheduleRepository.findScheduleByProfessorUuid(uuid);
+    }
+
+    @Override
+    public void confirmarHorarioAsignado(UUID profesorUuid, Long horarioId) {
+        SchedulesEntity horario = scheduleRepository.findById(horarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Horario no encontrado"));
+
+        // Verificar que el profesor sea el dueño del horario
+        UUID horarioProfesorUuid = horario.getSubjectEntity().getProfessorEntity().getUuid();
+        if (!horarioProfesorUuid.equals(profesorUuid)) {
+            throw new ForbiddenException("No puedes confirmar un horario que no te pertenece");
+        }
+
+        horario.setConfirmado(true);
+        scheduleRepository.save(horario);
     }
 
 
