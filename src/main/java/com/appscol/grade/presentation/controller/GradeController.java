@@ -2,6 +2,7 @@ package com.appscol.grade.presentation.controller;
 
 import com.appscol.constants.EndpointsConstants;
 import com.appscol.grade.presentation.dto.GradeDto;
+import com.appscol.grade.presentation.payload.AssignSubjectsToGradePayload;
 import com.appscol.grade.presentation.payload.GradePayload;
 import com.appscol.grade.service.interfaces.IGradeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,5 +88,17 @@ public class GradeController {
     public ResponseEntity<GradeDto> findById(@PathVariable Long id) {
         GradeDto result = gradeService.findById(id);
         return ResponseEntity.ok(result);
+    }
+
+    @Operation(summary = "Asignar materias a un grado")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Materias asignadas exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
+            @ApiResponse(responseCode = "404", description = "Grado o materias no encontradas")
+    })
+    @PostMapping("/assign-subjects")
+    public ResponseEntity<Void> assignSubjectsToGrade(@Validated @RequestBody AssignSubjectsToGradePayload payload) {
+        gradeService.assignSubjectsToGrade(payload);
+        return ResponseEntity.ok().build();
     }
 }
