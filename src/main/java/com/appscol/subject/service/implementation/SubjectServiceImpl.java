@@ -1,5 +1,7 @@
 package com.appscol.subject.service.implementation;
 
+import com.appscol.grade.persistence.Repositories.GradeRepository;
+import com.appscol.grade.persistence.entities.GradeEntity;
 import com.appscol.helpers.exception.exceptions.ResourceNotFoundException;
 import com.appscol.professor.persistence.entities.ProfessorEntity;
 import com.appscol.professor.persistence.repositories.ProfessorRepository;
@@ -25,19 +27,20 @@ public class SubjectServiceImpl implements ISubjectService {
     private final SubjectRepository subjectRepository;
     private final SubjectFactory factory;
     private final ProfessorRepository professorRepository;
+    private final GradeRepository gradeRepository;
 
     @Override
     @Transactional
     public void save(SubjectPayload payload) {
-        ProfessorEntity professor = professorRepository.findById(payload.getProfessorId())
-                .orElseThrow(() -> new ResourceNotFoundException("Profesor no encontrado con ID: " + payload.getProfessorId()));
+        ProfessorEntity professor = professorRepository.findByUuid(payload.getProfessorUuid())
+                .orElseThrow(() -> new ResourceNotFoundException("Profesor no encontrado con ID: " + payload.getProfessorUuid()));
 
-      //  List<GradeEntity> grades = gradeRepository.findAllById(payload.getGradeIds());
+      List<GradeEntity> grades = gradeRepository.findAllById(payload.getGradeIds());
 
         SubjectEntity subject = SubjectEntity.builder()
                 .subjectName(payload.getSubjectName().trim())
                 .professorEntity(professor)
-               //.gradeEntities(grades)
+                .gradeEntities(grades)
                 .build();
 
         subjectRepository.save(subject);
@@ -49,14 +52,14 @@ public class SubjectServiceImpl implements ISubjectService {
         SubjectEntity subject = subjectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Materia no encontrada con ID: " + id));
 
-        ProfessorEntity professor = professorRepository.findById(payload.getProfessorId())
-                .orElseThrow(() -> new ResourceNotFoundException("Profesor no encontrado con ID: " + payload.getProfessorId()));
+        ProfessorEntity professor = professorRepository.findByUuid(payload.getProfessorUuid())
+                .orElseThrow(() -> new ResourceNotFoundException("Profesor no encontrado con ID: " + payload.getProfessorUuid()));
 
-      //  List<GradeEntity> grades = gradeRepository.findAllById(payload.getGradeIds());
+      List<GradeEntity> grades = gradeRepository.findAllById(payload.getGradeIds());
 
         subject.setSubjectName(payload.getSubjectName().trim());
         subject.setProfessorEntity(professor);
-       // subject.setGradeEntities(grades);
+       subject.setGradeEntities(grades);
 
         subjectRepository.save(subject);
     }

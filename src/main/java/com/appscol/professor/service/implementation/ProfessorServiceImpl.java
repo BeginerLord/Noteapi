@@ -8,6 +8,8 @@ import com.appscol.professor.persistence.repositories.ProfessorRepository;
 import com.appscol.professor.presentation.dto.ProfessorDto;
 import com.appscol.professor.presentation.payload.ProfessorPayload;
 import com.appscol.professor.service.interfaces.IProfessorService;
+import com.appscol.schedule.persistence.repositories.ScheduleRepository;
+import com.appscol.schedule.presentation.dto.ScheduleDto;
 import com.appscol.security.auth.persistence.model.rol.RoleEntity;
 import com.appscol.security.auth.persistence.model.rol.RoleEnum;
 import com.appscol.security.auth.persistence.repositories.RoleRepository;
@@ -21,8 +23,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 
@@ -34,6 +38,7 @@ public class ProfessorServiceImpl implements IProfessorService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ScheduleRepository scheduleRepository;
 
     @Override
     @Transactional
@@ -119,7 +124,7 @@ public class ProfessorServiceImpl implements IProfessorService {
 
     @Override
     public Page<ProfessorDto> findByEspecialidad(String especialidad, Pageable pageable) {
-        return professorRepository.findByEspecialidad(especialidad,pageable)
+        return professorRepository.findByEspecialidad(especialidad, pageable)
                 .map(factory::professorDto);
     }
 
@@ -136,7 +141,26 @@ public class ProfessorServiceImpl implements IProfessorService {
     public ProfessorDto findByUuid(UUID uuid) {
         return professorRepository.findByUuid(uuid)
                 .map(factory::professorDto)
-                .orElseThrow(()->new ResourceNotFoundException("No existe el profesor con UUID: " + uuid + "registrado en la DB"));
+                .orElseThrow(() -> new ResourceNotFoundException("No existe el profesor con UUID: " + uuid + "registrado en la DB"));
+    }
+
+    @Override
+    public boolean confirmarDisponibilidadProfesor(UUID professorUuid, String dia, String horaInicio, String horaFin) {
+        // Validamos que todos los campos necesarios estén presentes
+        if (professorUuid == null || dia == null || horaInicio == null || horaFin == null) {
+            throw new IllegalArgumentException("Todos los parámetros son obligatorios");
+        }
+
+        // Buscamos conflictos de horario para el profesor
+        List<ScheduleDto> conflicts = scheduleRepository.findConflictingHorarios(
+                professorUuid,
+                dia.trim(),
+                horaInicio.trim(),
+                horaFin.trim()
+        );
+
+        // Si la lista está vacía, no hay conflictos y el profesor está disponible
+        return conflicts.isEmpty();
     }
 
 

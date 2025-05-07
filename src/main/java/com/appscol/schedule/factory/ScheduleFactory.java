@@ -18,6 +18,8 @@ public class ScheduleFactory {
                 .horaFin(schedules.getHoraFin())
                 .sectionName(schedules.getSectionsEntity().getSectionName())
                 .subjectName(schedules.getSubjectEntity().getSubjectName())
+                .grade(schedules.getSectionsEntity().getGradeEntity().getGrade())
+                .professorUsername(schedules.getSubjectEntity().getProfessorEntity().getUserEntity().getUsername())
                 .build();
     }
 }

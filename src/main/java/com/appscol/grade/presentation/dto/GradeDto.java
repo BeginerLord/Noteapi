@@ -4,6 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record GradeDto(
-        String grade
+        String grade,
+        Long gradeId
 ) {
 }

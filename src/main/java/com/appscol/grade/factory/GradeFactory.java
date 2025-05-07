@@ -14,7 +14,7 @@ public class GradeFactory {
 
     public GradeDto gradeDto(GradeEntity gradeEntity){
         return GradeDto.builder()
-                //.id(String.valueOf(gradeEntity.getId()))
+                .gradeId(gradeEntity.getId())
                 .grade(gradeEntity.getGrade())
                 .build();
     }

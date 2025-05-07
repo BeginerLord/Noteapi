@@ -27,6 +27,8 @@ import java.util.UUID;
 public class ProfessorController {
 
     private final IProfessorService professorService;
+
+
     @Operation(summary = "Crear un nuevo profesor")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Profesor creado exitosamente"),
@@ -37,9 +39,6 @@ public class ProfessorController {
         professorService.save(payload);
         return ResponseEntity.created(URI.create(EndpointsConstants.ENDPOINT_PROFESSOR)).build();
     }
-
-
-
 
     @Operation(summary = "Actualizar profesor por UUID")
     @ApiResponses({
@@ -111,5 +110,22 @@ public class ProfessorController {
     public ResponseEntity<ProfessorDto> findByUuid(@PathVariable UUID uuid) {
         ProfessorDto result = professorService.findByUuid(uuid);
         return ResponseEntity.ok(result);
+    }
+
+    @Operation(summary = "Confirmar disponibilidad de un profesor en un horario específico")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Consulta realizada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
+    })
+    @GetMapping("/confirmarDisponibilidad")
+    public ResponseEntity<Boolean> confirmarDisponibilidadProfesor(
+            @RequestParam UUID professorUuid,
+            @RequestParam String dia,
+            @RequestParam String horaInicio,
+            @RequestParam String horaFin) {
+
+        boolean disponible = professorService.confirmarDisponibilidadProfesor(
+                professorUuid, dia, horaInicio, horaFin);
+        return ResponseEntity.ok(disponible);
     }
 }

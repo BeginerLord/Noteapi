@@ -15,5 +15,6 @@ public interface IProfessorService {
     Page<ProfessorDto> findByEspecialidad(String especialidad, Pageable pageable);
     Page<ProfessorDto>findAll (Pageable pageable);
     ProfessorDto findByUuid(UUID uuid);
+    boolean confirmarDisponibilidadProfesor(UUID professorUuid, String dia, String horaInicio, String horaFin);
 
 }

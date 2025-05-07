@@ -9,7 +9,9 @@ public record ScheduleDto(
         String horaFin,
         String sectionName,
         String subjectName,
-        String grade
+        String grade,
+        String professorUsername
 
 ) {
+
 }

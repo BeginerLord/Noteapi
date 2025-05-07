@@ -5,6 +5,8 @@ import com.appscol.subject.persistence.entities.SubjectEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalTime;
+
 @Entity
 @Builder
 @Getter

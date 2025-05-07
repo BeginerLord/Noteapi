@@ -1,5 +1,7 @@
 package com.appscol.section.service.implementation;
 
+import com.appscol.grade.persistence.Repositories.GradeRepository;
+import com.appscol.grade.persistence.entities.GradeEntity;
 import com.appscol.helpers.exception.exceptions.ResourceNotFoundException;
 import com.appscol.section.factory.SectionFactory;
 import com.appscol.section.persistence.entities.SectionsEntity;
@@ -21,13 +23,17 @@ public class SectionServiceImpl implements ISectionService {
     private final SectionRepository sectionRepository;
     private final ModelMapper modelMapper;
     private final SectionFactory sectionFactory;
+    private final GradeRepository gradeRepository;
 
     @Override
     @Transactional()
     public void save(SectionPayload payload) {
+        GradeEntity grade = gradeRepository.findById(payload.getGradeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Grado no encontrado con ID: " + payload.getGradeId()));
+
         SectionsEntity section = SectionsEntity.builder()
                 .sectionName(payload.getSectionName().trim())
-                //.gradeEntity(graE)
+                .gradeEntity(grade)
                 .build();
 
         sectionRepository.save(section);
@@ -63,7 +69,7 @@ public class SectionServiceImpl implements ISectionService {
     @Transactional(readOnly = true)
     public Page<SectionDto> findAll(Pageable pageable) {
         return sectionRepository.findAll(pageable)
-                .map(section -> modelMapper.map(section, SectionDto.class));
+                .map(sectionFactory::sectionDto);
     }
 
     @Override
