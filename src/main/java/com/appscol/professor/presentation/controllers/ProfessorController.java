@@ -1,6 +1,7 @@
 package com.appscol.professor.presentation.controllers;
 
 import com.appscol.constants.EndpointsConstants;
+import com.appscol.professor.presentation.dto.CargaAcademicaDto;
 import com.appscol.professor.presentation.dto.ProfessorDto;
 import com.appscol.professor.presentation.payload.ProfessorPayload;
 import com.appscol.professor.service.interfaces.IProfessorService;
@@ -18,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -127,5 +129,15 @@ public class ProfessorController {
         boolean disponible = professorService.confirmarDisponibilidadProfesor(
                 professorUuid, dia, horaInicio, horaFin);
         return ResponseEntity.ok(disponible);
+    }
+    @Operation(summary = "Obtener carga académica de un profesor")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Carga académica obtenida exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Profesor no encontrado")
+    })
+    @GetMapping("/{uuid}/carga-academica")
+    public ResponseEntity<List<CargaAcademicaDto>> obtenerCargaAcademica(@PathVariable UUID uuid) {
+        List<CargaAcademicaDto> cargaAcademica = professorService.obtenerCargaAcademica(uuid);
+        return ResponseEntity.ok(cargaAcademica);
     }
 }

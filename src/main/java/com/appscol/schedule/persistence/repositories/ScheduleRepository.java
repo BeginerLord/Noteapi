@@ -56,5 +56,9 @@ public interface ScheduleRepository extends JpaRepository<SchedulesEntity, Long>
             @Param("horaFin") String horaFin
     );
 
+    @Query("SELECT s.subjectEntity.subjectName, COUNT(s) FROM SchedulesEntity s " +
+            "WHERE s.subjectEntity.professorEntity.uuid = :profesorUuid " +
+            "GROUP BY s.subjectEntity.subjectName")
+    List<Object[]> obtenerCargaAcademicaPorProfesor(UUID profesorUuid);
 
 }

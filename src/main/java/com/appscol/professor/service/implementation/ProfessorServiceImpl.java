@@ -5,6 +5,7 @@ import com.appscol.helpers.exception.exceptions.ResourceNotFoundException;
 import com.appscol.professor.factory.ProfessorFactory;
 import com.appscol.professor.persistence.entities.ProfessorEntity;
 import com.appscol.professor.persistence.repositories.ProfessorRepository;
+import com.appscol.professor.presentation.dto.CargaAcademicaDto;
 import com.appscol.professor.presentation.dto.ProfessorDto;
 import com.appscol.professor.presentation.payload.ProfessorPayload;
 import com.appscol.professor.service.interfaces.IProfessorService;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +41,7 @@ public class ProfessorServiceImpl implements IProfessorService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final ScheduleRepository scheduleRepository;
+
 
     @Override
     @Transactional
@@ -163,5 +166,14 @@ public class ProfessorServiceImpl implements IProfessorService {
         return conflicts.isEmpty();
     }
 
-
+    @Override
+    public List<CargaAcademicaDto> obtenerCargaAcademica(UUID profesorUuid) {
+        List<Object[]> cargaAcademica = scheduleRepository.obtenerCargaAcademicaPorProfesor(profesorUuid);
+        return cargaAcademica.stream()
+                .map(record -> CargaAcademicaDto.builder()
+                        .materia((String) record[0])
+                        .clasesPorSemana(((Long) record[1]).intValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }
