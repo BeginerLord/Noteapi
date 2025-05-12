@@ -4,7 +4,10 @@ import lombok.Builder;
 
 @Builder
 public record NotesDto(
+        Long id,
+        String studentName,
         Double valor,
-        String periodo
+        String periodo,
+        String professorUsername
 ) {
 }

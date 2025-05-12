@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class AuthLoginService {
@@ -42,10 +44,11 @@ public class AuthLoginService {
 
         // 🔹 Generar Access Token
         String accessToken = jwtTokenProvider.createAccessToken(auth);
+        UUID userUuid = user.getUuid();
 
         // 🔹 Generar Refresh Token
 
 
-        return new AuthResponse(request.email(), "Login successful", accessToken);
+        return new AuthResponse(request.email(), "Login successful", accessToken, userUuid);
     }
 }

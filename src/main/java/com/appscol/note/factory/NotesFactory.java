@@ -13,7 +13,7 @@ public class NotesFactory {
 
     public NotesDto notesDto(NotesEntity notesEntity){
         return NotesDto.builder()
-                //.id(String.valueOf(gradeEntity.getId()))
+                .id(notesEntity.getId())
                 .valor(notesEntity.getValor())
                 .periodo(notesEntity.getPeriodo())
                 .build();

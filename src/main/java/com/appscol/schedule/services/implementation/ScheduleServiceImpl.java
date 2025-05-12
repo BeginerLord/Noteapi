@@ -108,5 +108,10 @@ public class ScheduleServiceImpl implements IScheduleService {
         scheduleRepository.save(horario);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<ScheduleDto> findScheduleByStudentUuid(UUID studentUuid) {
+        return scheduleRepository.findScheduleByStudentUuid(studentUuid);
+    }
 
 }

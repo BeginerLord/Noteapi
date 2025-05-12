@@ -11,6 +11,6 @@ public interface IScheduleService {
    void asignarHorarioProfesor(SchedulePayload payload);
    List<ScheduleDto> findScheduleByProfessorUuid(UUID uuid);
    void confirmarHorarioAsignado(UUID profesorUuid, Long horarioId);
-
+   List<ScheduleDto> findScheduleByStudentUuid(UUID studentUuid);
 
 }

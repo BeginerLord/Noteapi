@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +46,6 @@ public class AuthRegisterService {
         // Generar Access Token
         String accessToken = jwtTokenProvider.createAccessToken(authentication);
 
-        return new AuthResponse(user.getUsername(), "User created successfully", accessToken);
+        return new AuthResponse(user.getUsername(), "User created successfully", accessToken, UUID.randomUUID());
     }
 }

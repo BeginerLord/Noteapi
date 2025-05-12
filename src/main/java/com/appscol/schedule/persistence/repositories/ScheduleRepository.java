@@ -61,4 +61,22 @@ public interface ScheduleRepository extends JpaRepository<SchedulesEntity, Long>
             "GROUP BY s.subjectEntity.subjectName")
     List<Object[]> obtenerCargaAcademicaPorProfesor(UUID profesorUuid);
 
+    @Query("""
+            SELECT new com.appscol.schedule.presentation.dto.ScheduleDto(
+                s.dia,
+                s.horaInicio,
+                s.horaFin,
+                sec.sectionName,
+                sub.subjectName,
+                g.grade,
+                sub.professorEntity.userEntity.username
+            )
+            FROM SchedulesEntity s
+            JOIN s.sectionsEntity sec
+            JOIN sec.studentEntities st
+            JOIN sec.gradeEntity g
+            JOIN s.subjectEntity sub
+            WHERE st.uuid = :studentUuid
+            """)
+    List<ScheduleDto> findScheduleByStudentUuid(@Param("studentUuid") UUID studentUuid);
 }
