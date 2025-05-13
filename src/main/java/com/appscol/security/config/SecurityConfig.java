@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationProvider authenticationProvider) throws Exception {
         return httpSecurity
@@ -30,62 +32,6 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(http -> {
-
-                    // Endpoints públicos
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SIGNUP).permitAll();
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_LOGIN).permitAll();
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SCHEDULE).permitAll();
-
-
-                    //post
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_PROFESSOR).permitAll();
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SECTION + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SUBJECT + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_NOTE + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_GRADE + "/**").permitAll();
-
-
-
-                    //GETS
-                    http.requestMatchers(HttpMethod.GET, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_SECTION + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_SUBJECT + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_NOTE + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.GET,EndpointsConstants.ENDPOINT_GRADE + "/**").permitAll();
-
-
-                    //delete
-                    http.requestMatchers(HttpMethod.DELETE,EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_SECTION + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_SUBJECT + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_NOTE + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_GRADE + "/**").permitAll();
-
-
-
-
-
-
-                    //update
-                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SECTION + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SUBJECT + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_NOTE + "/**").permitAll();
-                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_GRADE + "/**").permitAll();
-
-
-
-
-
-                    //http.requestMatchers(HttpMethod.POST, "/api/v1/auth/refresh").permitAll();
 
                     // Endpoints Swagger
                     http.requestMatchers(
@@ -96,14 +42,54 @@ public class SecurityConfig {
                             "/v3/api-docs.json"
                     ).permitAll();
 
-                    // Endpoints solo para ADMIN
-                    http.requestMatchers("/admin/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SIGNUP).permitAll();
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_LOGIN).permitAll();
 
-                    // Endpoints solo para USER
-                    http.requestMatchers("/user/**").hasRole("USER");
+                    // Crear estudiante y profesor (solo admin puede crearlos)
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_STUDENT + "/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").permitAll();
 
-                    // Endpoints accesibles por USER y ADMIN
-                    http.requestMatchers("/common/**").hasAnyRole("USER", "ADMIN");
+                    // Endpoints CRUD de recursos (solo admin)
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SECTION + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_SUBJECT + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_NOTE + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.POST, EndpointsConstants.ENDPOINT_GRADE + "/**").hasRole("ADMIN");
+
+                    // Endpoints de consulta, accesibles solo para usuarios autenticados según rol
+                    http.requestMatchers(HttpMethod.GET, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").hasAnyRole("ADMIN", "PROFESSOR");
+                    http.requestMatchers(HttpMethod.GET, EndpointsConstants.ENDPOINT_STUDENT + "/**").hasAnyRole("ADMIN", "STUDENT");
+                    http.requestMatchers(HttpMethod.GET, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").hasAnyRole("ADMIN", "STUDENT", "PROFESSOR");
+                    http.requestMatchers(HttpMethod.GET, EndpointsConstants.ENDPOINT_SECTION + "/**").hasAnyRole("ADMIN", "PROFESSOR");
+                    http.requestMatchers(HttpMethod.GET, EndpointsConstants.ENDPOINT_SUBJECT + "/**").hasAnyRole("ADMIN", "PROFESSOR");
+                    http.requestMatchers(HttpMethod.GET, EndpointsConstants.ENDPOINT_NOTE + "/**").hasAnyRole("ADMIN", "PROFESSOR", "STUDENT");
+                    http.requestMatchers(HttpMethod.GET, EndpointsConstants.ENDPOINT_GRADE + "/**").hasAnyRole("ADMIN", "PROFESSOR");
+
+                    // PUT para actualizar recursos solo para ADMIN y PROFESOR
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_STUDENT + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SECTION + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SUBJECT + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_NOTE + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_GRADE + "/**").hasRole("ADMIN");
+
+                    // DELETE solo para ADMIN
+                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_PROFESSOR + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_STUDENT + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_SCHEDULE + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_SECTION + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_SUBJECT + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_NOTE + "/**").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.DELETE, EndpointsConstants.ENDPOINT_GRADE + "/**").hasRole("ADMIN");
+
+                    // PUT para confirmar horarios (profesor o admin)
+                    http.requestMatchers(HttpMethod.PUT, EndpointsConstants.ENDPOINT_SCHEDULE + "/profesor/{profesorUuid}/horario/{horarioId}/confirmar")
+                            .hasAnyRole("ADMIN", "PROFESSOR");
+
+                    // GET para horarios de estudiantes (solo estudiante, admin y profesor)
+                    http.requestMatchers(HttpMethod.GET, EndpointsConstants.ENDPOINT_SCHEDULE + "/student/{studentUuid}/horario")
+                            .hasAnyRole("ADMIN", "STUDENT");
 
                     // Otras reglas personalizadas por método y permisos
                     http.requestMatchers(HttpMethod.GET, "/method/get").hasAuthority("READ");
